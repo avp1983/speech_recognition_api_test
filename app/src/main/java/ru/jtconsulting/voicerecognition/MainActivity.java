@@ -1,26 +1,26 @@
 package ru.jtconsulting.voicerecognition;
 
 import android.app.Activity;
-import android.content.Context;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
+
 import android.view.View;
-import android.view.animation.AnimationUtils;
+
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.ViewFlipper;
+
 import com.bssys.spitchmobilesdk.*;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends Activity  implements View.OnClickListener, View.OnTouchListener {
+public class MainActivity extends Activity  implements View.OnClickListener {
     Button btn;
     Button btn1;
     Button btn2;
@@ -32,10 +32,9 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
     MyTask mt;
     TextView taskOutput;
     int taskNumber=0;
-    //Rec rec = new Rec();
-    private boolean btnIsPressed=false;
-    private ViewFlipper flipper = null;
-    private float fromPosition;
+
+    public boolean btnIsPressed=false;
+
     private Handler h;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +43,8 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
         setContentView(R.layout.main);
 
         LinearLayout mainLayout = (LinearLayout) findViewById(R.id.main_layout);
-        mainLayout.setOnTouchListener(this);
+        mainLayout.setOnTouchListener(new Slider(this));
 
-        flipper = (ViewFlipper) findViewById(R.id.flipper);
-
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        int layouts[] = new int[]{ R.layout.activity_1, R.layout.activity_2, R.layout.activity_3};
-        for (int layout : layouts)
-            flipper.addView(inflater.inflate(layout, null));
 
         btn = (Button) findViewById(R.id.button);
         btn1 = (Button) findViewById(R.id.button1);
@@ -69,7 +62,7 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
         SpitchMobileService.initService("111", null, null, null, h, this);
 
     }
-    protected static boolean isVisible = false;
+
 
     @Override
     public void onResume()
@@ -145,7 +138,7 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
         if (btnIsPressed) { // выключаем
             if (v.getId() == R.id.button) { // свободное распознавание
                 int servRes = SpitchMobileService.getServiceState();
-                if (servRes!=2) return;
+                //if (servRes!=2) return;
                 Log.d(LOG_TAG, "getServiceState="+String.valueOf(servRes));
                 Log.d(LOG_TAG, "button1 OFF");
                 SpitchMobileService.stopRecognition();
@@ -203,58 +196,24 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
 
 
     }
-    private void unpressButton(Button b){
+    public void unpressButton(Button b){
         b.setText(R.string.btnON);
         b.setBackgroundResource(R.drawable.button);
     }
-    private void pressButton(Button b){
+    public void pressButton(Button b){
         b.setText(R.string.btnOFF);
         b.setBackgroundResource(R.drawable.button_off);
     }
-    private void  resetButtonsAndTxt(){
-        btnIsPressed=false;
-        cancelTask();
-        unpressButton(btn);txtOut.setText("");
-        unpressButton(btn1);txtOut1.setText("");
-        unpressButton(btn2);unpressButton(btn3);txtOut2.setText("");
-        btn3.setEnabled(true);btn2.setEnabled(true);
-    }
+
     private void  resetButtons(){
         btnIsPressed=false;
         cancelTask();
         unpressButton(btn);
-        unpressButton(btn1);;
+        unpressButton(btn1);
         unpressButton(btn2);unpressButton(btn3);
         btn3.setEnabled(true);btn2.setEnabled(true);
     }
-    public boolean onTouch(View view, MotionEvent event)
-    {
-        switch (event.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                fromPosition = event.getX();
 
-                break;
-            case MotionEvent.ACTION_UP:
-                float toPosition = event.getX();
-                resetButtonsAndTxt();
-                if (fromPosition > toPosition)
-                {
-                    flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.go_next_in));
-                    flipper.setOutAnimation(AnimationUtils.loadAnimation(this,R.anim.go_next_out));
-                    flipper.showNext();
-                }
-                else if (fromPosition < toPosition)
-                {
-                    flipper.setInAnimation(AnimationUtils.loadAnimation(this,R.anim.go_prev_in));
-                    flipper.setOutAnimation(AnimationUtils.loadAnimation(this,R.anim.go_prev_out));
-                    flipper.showPrevious();
-                }
-            default:
-                break;
-        }
-        return true;
-    }
     protected void cancelTask() {
         if (mt == null) return;
          mt.cancel(true);
@@ -268,7 +227,7 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
         }
         protected String task1(){
 
-            //rec.Start();
+
 
             return "Recording...";
 
@@ -293,7 +252,7 @@ public class MainActivity extends Activity  implements View.OnClickListener, Vie
 
         protected String testTask(String s){
             //taskOutput.setText(s);
-                String r="";
+                String r;
                try {
                    TimeUnit.SECONDS.sleep(2);
                    for (int i = 0; i < 10; i++) {
