@@ -1,0 +1,44 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+    <style name="Text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="label1" parent="@style/Text">
+        <item name="android:textColor">#404040</item>
+        <item name="android:textSize">30dp</item>
+
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_marginBottom">30dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="label4" parent="@style/Text">
+        <item name="android:textColor">#404040</item>
+        <item name="android:textSize">20dp</item>
+
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="button" parent="@style/Text">
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/button</item>
+
+     </style>
+    <style name="label2" >
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+     </style>
+    <style name="label3" >
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+
+    </style>
+</resources>

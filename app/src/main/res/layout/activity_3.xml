@@ -1,0 +1,68 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_margin="30dp"
+        android:weightSum="1"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:text="@string/H4"
+            style="@style/label1"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:text="@string/l4"
+            style="@style/label4" />
+
+        <Button
+            android:text="@string/btnON"
+            android:id="@+id/button2"
+            style="@style/button"
+            />
+        <TextView
+            android:text="@string/l5"
+            style="@style/label4" />
+        <Button
+            android:text="@string/btnON"
+            android:id="@+id/button3"
+            style="@style/button"
+            />
+        <TextView
+            style="@style/label2"
+            android:text="@string/H2"
+
+
+            />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+
+            >
+            <TextView
+                android:background="@drawable/box"
+                style="@style/label3"
+                android:text=""
+                android:id="@+id/txtOut2"
+
+                />
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

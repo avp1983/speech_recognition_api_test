@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Распознавание голоса</string>
+
+    <string name="H1">Распознавание простого текста</string>
+    <string name="btnON">Включить запись</string>
+    <string name="btnOFF">Выключить запись</string>
+    <string name="H2">Результат распознавания:</string>
+    <string name="H3">Распознавание по грамматике</string>
+    <string name="H4">Верификация голоса</string>
+    <string name="l4">Создание слепка голоса:</string>
+    <string name="l5">Проверить голос на соответствие слепку:</string>
+    <string name="action_settings">Выход</string>
+</resources>
