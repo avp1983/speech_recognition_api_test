@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-debug/app-debug.iml" filepath="$PROJECT_DIR$/app-debug/app-debug.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-debug2/app-debug2.iml" filepath="$PROJECT_DIR$/app-debug2/app-debug2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-debug3/app-debug3.iml" filepath="$PROJECT_DIR$/app-debug3/app-debug3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-debug4/app-debug4.iml" filepath="$PROJECT_DIR$/app-debug4/app-debug4.iml" />
     </modules>
   </component>
 </project>

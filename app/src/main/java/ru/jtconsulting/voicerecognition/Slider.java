@@ -39,7 +39,9 @@ public class Slider   implements  View.OnTouchListener{
                 break;
             case MotionEvent.ACTION_UP:
                 float toPosition = event.getX();
-                resetButtonsAndTxt();
+                context.resetButtonsAndTxt();
+                context.disableEnableButtons(!context.isBlocked);
+
                 if (fromPosition > toPosition)
                 {
                     flipper.setInAnimation(AnimationUtils.loadAnimation(context, R.anim.go_next_in));
@@ -57,12 +59,5 @@ public class Slider   implements  View.OnTouchListener{
         }
         return true;
     }
-    private void  resetButtonsAndTxt(){
-        context.btnIsPressed=false;
-        context.cancelTask();
-        context.unpressButton( context.btn); context.txtOut.setText("");
-        context.unpressButton( context.btn1); context.txtOut1.setText("");
-        context.unpressButton( context.btn2); context.unpressButton( context.btn3); context.txtOut2.setText("");
-        context.btn3.setEnabled(true); context.btn2.setEnabled(true);
-    }
+
 }

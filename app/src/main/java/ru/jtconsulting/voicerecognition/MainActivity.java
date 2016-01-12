@@ -2,7 +2,10 @@ package ru.jtconsulting.voicerecognition;
 
 import android.app.Activity;
 
-import android.os.AsyncTask;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -18,7 +21,7 @@ import android.widget.TextView;
 
 import com.bssys.spitchmobilesdk.*;
 
-import java.util.concurrent.TimeUnit;
+
 
 public class MainActivity extends Activity  implements View.OnClickListener {
     Button btn;
@@ -29,9 +32,9 @@ public class MainActivity extends Activity  implements View.OnClickListener {
     TextView txtOut1;
     TextView txtOut2;
     final String LOG_TAG = "myLogs";
-    MyTask mt;
+    public boolean isBlocked=true;
     TextView taskOutput;
-    int taskNumber=0;
+
 
     public boolean btnIsPressed=false;
 
@@ -58,9 +61,65 @@ public class MainActivity extends Activity  implements View.OnClickListener {
         btn1.setOnClickListener(this);
         btn2.setOnClickListener(this);
         btn3.setOnClickListener(this);
-        h= new Handl();
-        SpitchMobileService.initService("111", null, null, null, h, this);
+      // SpitchMobileService.initService("111", null, null, null, h, this);
+        showInitializationDialog();
+        h= new Handl(this);
+        initSpService();
 
+    }
+
+    public final static  int SERVICE_NOT_INITED = 0;
+    public final static  int SERVICE_PROCESSING_INITIALIZATION = 1;
+    public final static  int SERVICE_READY_TO_WORK = 2;
+    public final static  int SERVICE_ERROR_INIT = 3;
+    public final static  int SERVICE_BUSY = 4;
+
+    public void initSpService(){
+        int serviceState=0;
+        //int serviceState = SpitchMobileService.getServiceState();
+        if (serviceState==SERVICE_NOT_INITED||serviceState==SERVICE_ERROR_INIT){
+            disableEnableButtons(false);
+
+
+
+
+            SpitchMobileService.initService("111", null, null, null, h, this);
+        } else {
+            showAlert("Service is busy");
+
+        }
+    }
+
+    private void showAlert(String txt){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Важное сообщение!")
+                .setMessage(txt)
+                .setCancelable(false)
+                .setNegativeButton("ОК",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
+    }
+
+
+
+    public ProgressDialog  pd;
+    private void showInitializationDialog(){
+        pd = new ProgressDialog(this);
+        pd.setTitle("Старт.");
+        pd.setMessage("");
+        // добавляем кнопку
+        pd.setButton(Dialog.BUTTON_NEGATIVE, "Отмена", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //System.exit(0);
+            }
+        });
+        pd.show();
     }
 
 
@@ -80,11 +139,12 @@ public class MainActivity extends Activity  implements View.OnClickListener {
         resetButtons();
     }
 
-
+    public MenuItem initMenuitem;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        initMenuitem = menu.findItem(R.id.action_init);
         return true;
     }
 
@@ -94,25 +154,70 @@ public class MainActivity extends Activity  implements View.OnClickListener {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            finish();
-            System.exit(0);
+        switch(id){
+            case R.id.action_exit:
+                finish();
+                System.exit(0);
+                break;
+            case  R.id.action_init:
+                initSpService();
+                break;
         }
 
+
+
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startFreeVoiceRecognition(){
+        Log.d(LOG_TAG, "start FreeVoiceRecognition");
+
+
+    }
+    private void stopFreeVoiceRecognition(){
+        Log.d(LOG_TAG, "stop FreeVoiceRecognition");
+
+    }
+    private void invertBtn( int id){
+        Button b = (Button) findViewById(id);
+        if (btnIsPressed) {
+            unpressButton(b);
+
+        } else {
+            pressButton(b);
+        }
+        btnIsPressed = !btnIsPressed;
     }
 
     private void switchBtn(View v) {
 
         Button b = null;
 
+        int btnId=v.getId();
+        switch (btnId){
+            case R.id.button: // свободное распознование
+                if (btnIsPressed)  stopFreeVoiceRecognition(); else startFreeVoiceRecognition();
+                invertBtn(btnId);
+                break;
 
-        if (v.getId() == R.id.button) {
+            case R.id.button1: // распознование по грамматике
+                invertBtn(btnId);
+                break;
+
+            case R.id.button2: // слепок голоса
+                invertBtn(btnId);
+                break;
+
+            case R.id.button3: // проверка по слепку
+                invertBtn(btnId);
+                break;
+        }
+
+        /*if (v.getId() == R.id.button) {
             b = btn;
             taskOutput = txtOut;
-            //txt = "Текст 1";
+
             taskNumber=1;
 
 
@@ -120,28 +225,28 @@ public class MainActivity extends Activity  implements View.OnClickListener {
         if (v.getId() == R.id.button1) {
             b = btn1;
             taskOutput = txtOut1;
-            //txt = "Текст 2";
+
             taskNumber=2;
         }
         if (v.getId() == R.id.button2) { // слепок голоса
             b = btn2;
             taskOutput = txtOut2;
             taskNumber=3;
-            //txt = "Текст 3.1";
+
         }
         if (v.getId() == R.id.button3) { //проверка по слепку
             b = btn3;
             taskOutput = txtOut2;
             taskNumber=4;
-           //txt = "Текст 3.2";
-        }
-        if (btnIsPressed) { // выключаем
+
+        }*/
+      /*  if (btnIsPressed) { // выключаем
             if (v.getId() == R.id.button) { // свободное распознавание
                 int servRes = SpitchMobileService.getServiceState();
-                //if (servRes!=2) return;
+
                 Log.d(LOG_TAG, "getServiceState="+String.valueOf(servRes));
                 Log.d(LOG_TAG, "button1 OFF");
-                SpitchMobileService.stopRecognition();
+                if (servRes==2) SpitchMobileService.stopRecognition();
 
                 String res = SpitchMobileService.getSpitchResult();
                 Log.d(LOG_TAG, "getSpitchResult: "+res);
@@ -179,13 +284,12 @@ public class MainActivity extends Activity  implements View.OnClickListener {
                 btn2.setEnabled(false);
             }
 
-            mt = new MyTask();
-            mt.execute();
+
         }
 
             btnIsPressed = !btnIsPressed;
 
-
+*/
     }
     @Override
     public void onClick(View v) {
@@ -205,110 +309,43 @@ public class MainActivity extends Activity  implements View.OnClickListener {
         b.setBackgroundResource(R.drawable.button_off);
     }
 
-    private void  resetButtons(){
-        btnIsPressed=false;
-        cancelTask();
+    private void unpressButtons(){
         unpressButton(btn);
         unpressButton(btn1);
-        unpressButton(btn2);unpressButton(btn3);
-        btn3.setEnabled(true);btn2.setEnabled(true);
+        unpressButton(btn2);
+        unpressButton(btn3);
+    }
+
+    private void  resetButtons(){
+        btnIsPressed=false;
+        unpressButtons();
+        cancelTask();
+        disableEnableButtons(true);
+    }
+    public void disableEnableButtons(boolean enable){
+        btn.setEnabled(enable);
+        btn1.setEnabled(enable);
+        btn2.setEnabled(enable);
+        btn3.setEnabled(enable);
+    }
+
+    public void setTextToAll(String s){
+        txtOut.setText(s);
+        txtOut1.setText(s);
+        txtOut2.setText(s);
+    }
+
+
+    public void  resetButtonsAndTxt(){
+        btnIsPressed=false;
+        cancelTask();
+        unpressButtons();
+        setTextToAll("");
+        disableEnableButtons(true);
     }
 
     protected void cancelTask() {
-        if (mt == null) return;
-         mt.cancel(true);
+
     }
-    class MyTask extends AsyncTask<Void, String, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            taskOutput.setText("Begin");
 
-        }
-        protected String task1(){
-
-
-
-            return "Recording...";
-
-        }
-        protected String task2(){
-            return testTask("task2");
-
-        }
-        protected String task3(){
-            return testTask("task3");
-
-        }
-        protected String task4() {
-            return testTask("task4");
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-            taskOutput.setText(values[0]);
-        }
-
-        protected String testTask(String s){
-            //taskOutput.setText(s);
-                String r;
-               try {
-                   TimeUnit.SECONDS.sleep(2);
-                   for (int i = 0; i < 10; i++) {
-                       TimeUnit.SECONDS.sleep(2);
-                       // if (isCancelled()) return null;
-                       r = String.valueOf(i);
-                       publishProgress(s+" ["+r+"]");
-                       if (isCancelled()) return s+"Canseled";
-                   }
-               }catch (InterruptedException e) {
-                   s =s+"Interapted";
-                   e.printStackTrace();
-               }
-             return s+" Finished";
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-            try {
-
-
-                switch (taskNumber) {
-                    case 1:
-                        return task1();
-
-                    case 2:
-                        return task2();
-
-                    case 3:
-                        return task3();
-
-                    case 4:
-                        return task4();
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            //super.onPostExecute(result);
-            taskOutput.setText(result);
-
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-            taskOutput.setText("Cancel");
-            //Toast.makeText(this, "Нажата кнопка ОК", Toast.LENGTH_LONG).show();
-            Log.d(LOG_TAG, "cancel");
-          //rec.setReading(false);
-        }
-    }
 }

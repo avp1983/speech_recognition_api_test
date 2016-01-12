@@ -12,6 +12,8 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/app-debug" />
             <option value="$PROJECT_DIR$/app-debug2" />
+            <option value="$PROJECT_DIR$/app-debug3" />
+            <option value="$PROJECT_DIR$/app-debug4" />
           </set>
         </option>
       </GradleProjectSettings>

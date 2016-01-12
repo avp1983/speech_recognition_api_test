@@ -9,5 +9,6 @@
     <string name="H4">Верификация голоса</string>
     <string name="l4">Создание слепка голоса:</string>
     <string name="l5">Проверить голос на соответствие слепку:</string>
-    <string name="action_settings">Выход</string>
+    <string name="action_exit">Выход</string>
+    <string name="action_init">Инициализация</string>
 </resources>
