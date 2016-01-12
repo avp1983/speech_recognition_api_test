@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import android.view.Menu;
@@ -172,12 +173,24 @@ public class MainActivity extends Activity  implements View.OnClickListener {
 
     private void startFreeVoiceRecognition(){
         Log.d(LOG_TAG, "start FreeVoiceRecognition");
-
+        if (!SpitchMobileService.startRecognition("Mobile SDK grammar", new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                Log.d(LOG_TAG, "startFreeVoiceRecognition is successfull!!!!!!!!!!!!!!!");
+            }
+        })){
+            Log.d(LOG_TAG, "startFreeVoiceRecognition FAIL");
+            showAlert("Recognition error "+SpitchMobileService.getLastErrorMessage());
+        }
 
     }
     private void stopFreeVoiceRecognition(){
         Log.d(LOG_TAG, "stop FreeVoiceRecognition");
-
+        SpitchMobileService.stopRecognition();
+        String res =  SpitchMobileService.getSpitchResult();
+        Log.d(LOG_TAG, "getSpitchResult = "+res);
+        showAlert(res);
     }
     private void invertBtn( int id){
         Button b = (Button) findViewById(id);
