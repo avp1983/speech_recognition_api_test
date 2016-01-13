@@ -42,7 +42,10 @@ public class Handl extends Handler {
                grammars= SpitchMobileService.getGrammarList();
                if (grammars!=null){
                    Log.d(LOG_TAG, "getGrammarList is successfull");
-                   Log.d(LOG_TAG, "getGrammarList[0] is "+grammars.get(0));
+                   //Log.d(LOG_TAG, "getGrammarList[0] is "+grammars.get(0));
+                   for (int i=0;i<grammars.size();i++){
+                       Log.d(LOG_TAG,grammars.get(i));
+                   }
                } else {
                    Log.d(LOG_TAG, "getGrammarList is NOT successfull");
                }

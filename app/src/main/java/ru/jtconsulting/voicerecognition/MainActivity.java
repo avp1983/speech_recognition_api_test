@@ -177,16 +177,24 @@ public class MainActivity extends Activity  implements View.OnClickListener {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                Log.d(LOG_TAG, "startFreeVoiceRecognition is successfull!!!!!!!!!!!!!!!");
+                Log.d(LOG_TAG, "startFreeVoiceRecognition beginning Status="+String.valueOf(msg.what));
+                Log.d(LOG_TAG, "getLastErrorMessage="+SpitchMobileService.getLastErrorMessage());
+                Log.d(LOG_TAG, "getLastErrorCode="+String.valueOf(SpitchMobileService.getLastErrorCode()));
+                Log.d(LOG_TAG, "getServiceAvailability="+String.valueOf(SpitchMobileService.getServiceAvailability()));
+
+
             }
         })){
             Log.d(LOG_TAG, "startFreeVoiceRecognition FAIL");
             showAlert("Recognition error "+SpitchMobileService.getLastErrorMessage());
+
         }
 
     }
     private void stopFreeVoiceRecognition(){
         Log.d(LOG_TAG, "stop FreeVoiceRecognition");
+        Log.d(LOG_TAG, "getSpitchResult="+String.valueOf(SpitchMobileService.getSpitchResult()));
+        Log.d(LOG_TAG, "stop getServiceState="+String.valueOf(SpitchMobileService.getServiceState()));
         SpitchMobileService.stopRecognition();
         String res =  SpitchMobileService.getSpitchResult();
         Log.d(LOG_TAG, "getSpitchResult = "+res);
