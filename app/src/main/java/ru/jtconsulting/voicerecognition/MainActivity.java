@@ -181,6 +181,7 @@ public class MainActivity extends Activity  implements View.OnClickListener {
                 Log.d(LOG_TAG, "getLastErrorMessage="+SpitchMobileService.getLastErrorMessage());
                 Log.d(LOG_TAG, "getLastErrorCode="+String.valueOf(SpitchMobileService.getLastErrorCode()));
                 Log.d(LOG_TAG, "getServiceAvailability="+String.valueOf(SpitchMobileService.getServiceAvailability()));
+                Log.d(LOG_TAG, "getCurrentType()="+String.valueOf(SpitchMobileService.getCurrentType()));
 
 
             }
@@ -193,12 +194,12 @@ public class MainActivity extends Activity  implements View.OnClickListener {
     }
     private void stopFreeVoiceRecognition(){
         Log.d(LOG_TAG, "stop FreeVoiceRecognition");
-        Log.d(LOG_TAG, "getSpitchResult="+String.valueOf(SpitchMobileService.getSpitchResult()));
+       // Log.d(LOG_TAG, "getSpitchResult="+String.valueOf(SpitchMobileService.getSpitchResult()));
         Log.d(LOG_TAG, "stop getServiceState="+String.valueOf(SpitchMobileService.getServiceState()));
         SpitchMobileService.stopRecognition();
-        String res =  SpitchMobileService.getSpitchResult();
-        Log.d(LOG_TAG, "getSpitchResult = "+res);
-        showAlert(res);
+        //String res =  SpitchMobileService.getSpitchResult();
+        //Log.d(LOG_TAG, "getSpitchResult = "+res);
+       // showAlert(res);
     }
     private void invertBtn( int id){
         Button b = (Button) findViewById(id);
